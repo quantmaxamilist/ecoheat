@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+---
+
+<Layout
+  title="About Us | Eco Heat ASHP Ltd"
+  description="Eco Heat ASHP Ltd — over 25 years installing and servicing renewable heating systems in Preston, Lancashire and the North West."
+>
+  <Header />
+  <main class="pt-28 md:pt-32">
+    <section class="section-padding">
+      <div class="container-narrow grid items-start gap-12 lg:grid-cols-5">
+        <div class="lg:col-span-3">
+          <p class="eyebrow mb-3" data-reveal>About</p>
+          <h1 class="mb-6 font-heading text-4xl font-bold text-ink md:text-5xl" data-reveal>
+            About Us
+          </h1>
+          <div class="prose-content" data-reveal>
+            <h2 class="font-heading text-2xl font-bold text-ink">Welcome to Ecoheat ASHP Ltd</h2>
+            <p>
+              We are an eco-responsible company with over 25 years' experience installing and
+              servicing air source and ground source heat pumps, solar PV, solar thermal, air
+              conditioning, ventilation and refrigeration systems.
+            </p>
+            <p>
+              Based in Preston, Lancashire, we serve the North West with both residential and
+              commercial renewable heating solutions — from initial survey and design through to
+              installation and ongoing maintenance.
+            </p>
+            <h3>Our commitment</h3>
+            <p>
+              We are committed to sustainable, eco-friendly practices in everything we do. Our
+              digital partner offsets this website's emissions and supports tree planting initiatives.
+            </p>
+            <p>
+              We work closely with every client to deliver cost-effective, efficient renewable
+              solutions tailored to your property — with honest advice and quality workmanship you
+              can rely on.
+            </p>
+          </div>
+        </div>
+        <aside class="lg:col-span-2" data-reveal>
+          <div class="rounded-3xl bg-forest p-8 text-white">
+            <h2 class="mb-6 font-heading text-xl font-bold text-amber">Why choose Ecoheat?</h2>
+            <ul class="space-y-4 text-sm text-white/85">
+              <li class="flex gap-3">
+                <span class="text-amber">✓</span> MCS certified installations
+              </li>
+              <li class="flex gap-3">
+                <span class="text-amber">✓</span> 25+ years' industry experience
+              </li>
+              <li class="flex gap-3">
+                <span class="text-amber">✓</span> Boiler Upgrade Scheme eligible
+              </li>
+              <li class="flex gap-3">
+                <span class="text-amber">✓</span> Residential & commercial
+              </li>
+              <li class="flex gap-3">
+                <span class="text-amber">✓</span> Serving the North West
+              </li>
+            </ul>
+            <div class="mt-8 flex flex-wrap gap-2">
+              <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase"
+                >MCS Certified</span
+              >
+              <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase"
+                >25+ Years</span
+              >
+            </div>
+          </div>
+          <div class="mt-6 overflow-hidden rounded-3xl shadow-lg">
+            <img
+              src="/work/W10.jpg"
+              alt="Air source heat pump installation at a detached property in Lancashire"
+              class="aspect-[4/3] w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        </aside>
+      </div>
+    </section>
+    <CtaBand heading="Ready to talk about your project?" subtext={`Call Andy on ${site.phone} or book your free survey.`} />
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,48 @@
+---
+import { faqs } from '../data/site';
+---
+
+<section class="section-padding">
+  <div class="container-narrow">
+    <div class="mx-auto max-w-3xl">
+      <p class="eyebrow mb-3 text-center" data-reveal>FAQ</p>
+      <h2 class="mb-10 text-center font-heading text-3xl font-bold text-ink md:text-4xl" data-reveal>
+        Common questions
+      </h2>
+      <div class="space-y-3">
+        {
+          faqs.map((faq) => (
+            <div
+              data-faq-item
+              class="overflow-hidden rounded-2xl border border-forest/10 bg-white"
+              data-reveal
+            >
+              <button
+                data-faq-trigger
+                class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                aria-expanded="false"
+              >
+                <span class="font-heading text-lg font-bold text-ink">{faq.question}</span>
+                <span
+                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cream text-green transition-transform [.open>&]:rotate-45"
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </button>
+              <div data-faq-panel class="max-h-0 overflow-hidden transition-all duration-300">
+                <p class="px-6 pb-5 text-muted">{faq.answer}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-faq-item].open [data-faq-trigger] span:last-child {
+    transform: rotate(45deg);
+  }
+</style>

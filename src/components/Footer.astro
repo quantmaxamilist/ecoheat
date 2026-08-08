@@ -1,0 +1,92 @@
+---
+import { services, site } from '../data/site';
+---
+
+<footer class="bg-forest text-white">
+  <div class="section-padding container-narrow">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <a href="/" class="mb-4 inline-flex items-center gap-2">
+          <span
+            class="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-amber"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+              <path
+                d="M12 2C8 8 4 10 4 14a8 8 0 0016 0c0-4-4-6-8-12zm0 16a4 4 0 01-4-4c0-2 2-4 4-6 2 2 4 4 4 6a4 4 0 01-4 4z"
+              ></path>
+            </svg>
+          </span>
+          <span class="font-heading text-xl font-bold">eco<span class="text-amber">heat</span></span>
+        </a>
+        <p class="mb-4 text-sm leading-relaxed text-white/75">
+          MCS certified renewable heating specialists based in Preston, serving Lancashire and the
+          North West.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wide"
+            >MCS Certified</span
+          >
+          <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wide"
+            >25+ Years</span
+          >
+        </div>
+      </div>
+
+      <div>
+        <h2 class="mb-4 font-heading text-sm font-bold uppercase tracking-wider text-amber">
+          Services
+        </h2>
+        <ul class="space-y-2">
+          {
+            services.map((service) => (
+              <li>
+                <a
+                  href={service.href}
+                  class="text-sm text-white/80 transition-colors hover:text-amber"
+                >
+                  {service.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="mb-4 font-heading text-sm font-bold uppercase tracking-wider text-amber">
+          Company
+        </h2>
+        <ul class="space-y-2 text-sm text-white/80">
+          <li><a href="/our-work" class="transition-colors hover:text-amber">Our Work</a></li>
+          <li><a href="/about" class="transition-colors hover:text-amber">About Us</a></li>
+          <li><a href="/contact" class="transition-colors hover:text-amber">Contact</a></li>
+          <li><a href="/privacy-policy" class="transition-colors hover:text-amber">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="mb-4 font-heading text-sm font-bold uppercase tracking-wider text-amber">
+          Contact
+        </h2>
+        <address class="space-y-2 text-sm not-italic text-white/80">
+          <p>
+            <a href={site.phoneHref} class="font-semibold text-white hover:text-amber">{site.phone}</a>
+          </p>
+          <p>
+            <a href={site.emailHref} class="hover:text-amber">{site.email}</a>
+          </p>
+          <p>{site.address.line1}<br />{site.address.line2}</p>
+          <p class="pt-2 text-white/60">{site.coverage}</p>
+        </address>
+      </div>
+    </div>
+
+    <div
+      class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-white/60 md:flex-row"
+    >
+      <p>&copy; {new Date().getFullYear()} Eco Heat ASHP Ltd. All rights reserved.</p>
+      <p>MCS Certified · 25+ Years' Experience · Preston, Lancashire</p>
+    </div>
+  </div>
+</footer>

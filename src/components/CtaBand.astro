@@ -1,0 +1,24 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  heading?: string;
+  subtext?: string;
+}
+
+const {
+  heading = 'Ready for a warmer, cheaper home?',
+  subtext = 'Book your free survey today — no obligation, expert advice from Andy and the team.',
+} = Astro.props;
+---
+
+<section class="bg-forest section-padding">
+  <div class="container-narrow text-center" data-reveal>
+    <h2 class="mb-4 font-heading text-3xl font-bold text-white md:text-4xl">{heading}</h2>
+    <p class="mx-auto mb-8 max-w-2xl text-white/75">{subtext}</p>
+    <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <a href="/contact" class="btn-primary">Book a free survey</a>
+      <a href={site.phoneHref} class="btn-outline-light">{site.phone}</a>
+    </div>
+  </div>
+</section>

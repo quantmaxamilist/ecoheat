@@ -1,0 +1,88 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-forest: #0e4d3c;
+  --color-green: #14795a;
+  --color-amber: #f4a118;
+  --color-amber-dark: #db8e0a;
+  --color-cream: #faf7f0;
+  --color-ink: #0e2620;
+  --color-muted: #5b6b64;
+  --color-white: #ffffff;
+
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-cream font-body text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.2em] text-green;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-amber px-6 py-3 text-sm font-bold text-ink transition-colors hover:bg-amber-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-full border-2 border-forest px-6 py-3 text-sm font-bold text-forest transition-colors hover:bg-forest hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest;
+  }
+
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center rounded-full border-2 border-white/30 px-6 py-3 text-sm font-bold text-white transition-colors hover:border-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white;
+  }
+
+  .section-padding {
+    @apply px-5 py-16 md:px-8 md:py-24 lg:px-12;
+  }
+
+  .container-narrow {
+    @apply mx-auto max-w-6xl;
+  }
+
+  .prose-content p {
+    @apply mb-4 text-muted leading-relaxed;
+  }
+
+  .prose-content ul {
+    @apply mb-4 list-disc space-y-2 pl-5 text-muted;
+  }
+
+  .prose-content h3 {
+    @apply mb-3 mt-8 text-xl font-bold text-ink;
+  }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

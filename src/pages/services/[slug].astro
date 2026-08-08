@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ServicePageLayout from '../../components/ServicePageLayout.astro';
+import { servicePages, getServiceBySlug } from '../../data/site';
+
+export function getStaticPaths() {
+  return servicePages.map((service) => ({
+    params: { slug: service.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const service = getServiceBySlug(slug!);
+
+if (!service) {
+  return Astro.redirect('/404');
+}
+---
+
+<Layout title={`${service.title} | Eco Heat ASHP Ltd`} description={service.intro}>
+  <Header />
+  <main>
+    <ServicePageLayout service={service} />
+  </main>
+  <Footer />
+</Layout>

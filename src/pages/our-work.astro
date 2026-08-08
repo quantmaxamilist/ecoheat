@@ -1,0 +1,141 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { workPhotos } from '../data/site';
+---
+
+<Layout
+  title="Our Work | Eco Heat ASHP Ltd"
+  description="Recent air source heat pump, air conditioning and underfloor heating installations across Lancashire and the North West by Eco Heat ASHP Ltd."
+>
+  <Header />
+  <main class="pt-28 md:pt-32">
+    <section class="section-padding !pb-12">
+      <div class="container-narrow">
+        <p class="eyebrow mb-3" data-reveal>Portfolio</p>
+        <h1 class="mb-4 font-heading text-4xl font-bold text-ink md:text-5xl" data-reveal>
+          Our Work
+        </h1>
+        <p class="max-w-3xl text-lg text-muted" data-reveal>
+          A selection of our recent air source heat pump, air conditioning and underfloor heating
+          installations across the North West.
+        </p>
+      </div>
+    </section>
+
+    <section class="section-padding !pt-0">
+      <div class="container-narrow">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" id="gallery">
+          {
+            workPhotos.map((photo, i) => (
+              <button
+                type="button"
+                class="group cursor-pointer overflow-hidden rounded-2xl text-left"
+                data-reveal
+                data-lightbox-trigger
+                data-index={i}
+              >
+                <div class="overflow-hidden">
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    class="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+                <p class="mt-2 px-1 text-sm font-medium text-muted">{photo.caption}</p>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <CtaBand />
+  </main>
+  <Footer />
+
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-[100] hidden items-center justify-center bg-ink/90 p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image gallery lightbox"
+  >
+    <button
+      type="button"
+      id="lightbox-close"
+      class="absolute right-4 top-4 rounded-full bg-white/10 px-4 py-2 text-white hover:bg-white/20"
+      aria-label="Close lightbox"
+    >
+      Close
+    </button>
+    <button
+      type="button"
+      id="lightbox-prev"
+      class="absolute left-4 rounded-full bg-white/10 px-4 py-3 text-white hover:bg-white/20"
+      aria-label="Previous image"
+    >
+      ‹
+    </button>
+    <button
+      type="button"
+      id="lightbox-next"
+      class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-4 py-3 text-white hover:bg-white/20"
+      aria-label="Next image"
+    >
+      ›
+    </button>
+    <figure class="max-h-[85vh] max-w-5xl">
+      <img id="lightbox-image" src="" alt="" class="max-h-[75vh] w-full object-contain" />
+      <figcaption id="lightbox-caption" class="mt-4 text-center text-white/80"></figcaption>
+    </figure>
+  </div>
+
+  <script define:vars={{ workPhotos }}>
+    const photos = workPhotos;
+    let currentIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const image = document.getElementById('lightbox-image');
+    const caption = document.getElementById('lightbox-caption');
+
+    function show(index) {
+      currentIndex = (index + photos.length) % photos.length;
+      const photo = photos[currentIndex];
+      if (!image || !caption || !lightbox) return;
+      image.src = photo.src;
+      image.alt = photo.alt;
+      caption.textContent = photo.caption;
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function close() {
+      lightbox?.classList.add('hidden');
+      lightbox?.classList.remove('flex');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    document.querySelectorAll('[data-lightbox-trigger]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        show(Number(btn.getAttribute('data-index')));
+      });
+    });
+
+    document.getElementById('lightbox-close')?.addEventListener('click', close);
+    document.getElementById('lightbox-prev')?.addEventListener('click', () => show(currentIndex - 1));
+    document.getElementById('lightbox-next')?.addEventListener('click', () => show(currentIndex + 1));
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (lightbox?.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(currentIndex - 1);
+      if (e.key === 'ArrowRight') show(currentIndex + 1);
+    });
+  </script>
+</Layout>

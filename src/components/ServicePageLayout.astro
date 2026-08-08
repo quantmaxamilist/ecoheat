@@ -1,0 +1,70 @@
+---
+import ServiceIcon from './ServiceIcon.astro';
+import type { ServicePage } from '../data/site';
+import CtaBand from './CtaBand.astro';
+
+interface Props {
+  service: ServicePage;
+}
+
+const { service } = Astro.props;
+---
+
+<section class="bg-cream pt-28 md:pt-32">
+  <div class="section-padding !pb-12">
+    <div class="container-narrow grid items-center gap-10 lg:grid-cols-2">
+      <div data-reveal>
+        <div class="mb-4 flex items-center gap-3">
+          <ServiceIcon name={service.icon} class="h-12 w-12 text-green" />
+          <p class="eyebrow">Service</p>
+        </div>
+        <h1 class="mb-4 font-heading text-4xl font-bold text-ink md:text-5xl">{service.title}</h1>
+        <p class="text-lg text-muted">{service.intro}</p>
+      </div>
+      <div class="overflow-hidden rounded-3xl shadow-lg" data-reveal>
+        <img
+          src={service.heroImage}
+          alt={service.heroAlt}
+          class="aspect-[4/3] w-full object-cover"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-padding">
+  <div class="container-narrow space-y-16">
+    {
+      service.sections.map((section, i) => (
+        <article
+          class:list={[
+            'grid items-center gap-8 md:grid-cols-2',
+            i % 2 === 1 && 'md:[&>*:first-child]:order-2',
+          ]}
+          data-reveal
+        >
+          <div class="prose-content">
+            <h2 class="mb-4 font-heading text-2xl font-bold text-ink">{section.title}</h2>
+            <p>{section.content}</p>
+            {section.bullets && (
+              <ul>
+                {section.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-forest/5 p-8">
+            <div class="flex h-full min-h-[200px] flex-col justify-center">
+              <ServiceIcon name={service.icon} class="mb-4 h-14 w-14 text-green" />
+              <p class="font-heading text-xl font-bold text-ink">{section.title}</p>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<CtaBand heading={`Interested in ${service.title.toLowerCase()}?`} />
