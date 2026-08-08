@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site } from '../data/site';
+import { site, heroImages } from '../data/site';
 ---
 
 <Layout
@@ -96,8 +96,8 @@ import { site } from '../data/site';
             </div>
             <div class="overflow-hidden rounded-3xl shadow-lg">
               <img
-                src="/work/W5.jpg"
-                alt="Eco Heat ASHP installation providing heating and hot water in Lancashire"
+                src={heroImages.ashp}
+                alt="Outdoor air source heat pump system installed by Ecoheat in Lancashire"
                 class="aspect-[16/10] w-full object-cover"
                 loading="lazy"
               />

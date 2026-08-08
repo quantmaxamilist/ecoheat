@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { workPhotos } from '../data/site';
+import { workPhotos, workPhotoCount } from '../data/site';
 ---
 
 <Layout
@@ -20,7 +20,8 @@ import { workPhotos } from '../data/site';
         </h1>
         <p class="max-w-3xl text-lg text-muted" data-reveal>
           A selection of our recent air source heat pump, air conditioning and underfloor heating
-          installations across the North West.
+          installations across the North West — {workPhotoCount} project photos from real Ecoheat
+          jobs.
         </p>
       </div>
     </section>

@@ -12,7 +12,10 @@ import {
   whyRenewable,
   reasonsToSwitch,
   reviews,
+  galleryPreview,
   workPhotos,
+  heroImages,
+  workPhotoCount,
   site,
 } from '../data/site';
 ---
@@ -54,8 +57,8 @@ import {
           </div>
           <div class="overflow-hidden rounded-3xl shadow-xl" data-reveal>
             <img
-              src="/work/W1.jpg"
-              alt="Mitsubishi Ecodan air source heat pump installed at a residential property in Lancashire"
+              src={heroImages.home}
+              alt="Outdoor air source heat pump unit installed by Ecoheat at a residential property"
               class="aspect-[4/3] w-full object-cover"
               loading="eager"
             />
@@ -224,7 +227,7 @@ import {
         </div>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {
-            workPhotos.slice(0, 6).map((photo) => (
+            galleryPreview.map((photo) => (
               <figure class="group overflow-hidden rounded-2xl" data-reveal>
                 <div class="overflow-hidden">
                   <img

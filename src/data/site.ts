@@ -1,3 +1,14 @@
+import {
+  galleryPreview,
+  heroImages,
+  workPhotoCount,
+  workPhotos,
+  type WorkPhoto,
+} from './work-photos';
+
+export type { WorkPhoto };
+export { galleryPreview, heroImages, workPhotoCount, workPhotos };
+
 export const site = {
   name: 'Eco Heat ASHP Ltd',
   tagline: 'Renewable heating specialists across Lancashire and the North West',
@@ -124,70 +135,6 @@ export const reviews = [
   },
 ] as const;
 
-export interface WorkPhoto {
-  src: string;
-  alt: string;
-  caption: string;
-}
-
-export const workPhotos: WorkPhoto[] = [
-  {
-    src: '/work/W1.jpg',
-    alt: 'Mitsubishi 8.5kW Ecodan air source heat pump installed outside a residential property',
-    caption: 'Mitsubishi 8.5kW Ecodan ASHP',
-  },
-  {
-    src: '/work/W2.jpg',
-    alt: 'Panasonic 16kW air source heat pump retrofit installation',
-    caption: 'Panasonic 16kW ASHP retrofit',
-  },
-  {
-    src: '/work/W3.jpg',
-    alt: 'Outdoor unit of a twin-split Fujitsu air conditioning system',
-    caption: 'Twin-split Fujitsu AC',
-  },
-  {
-    src: '/work/W4.jpg',
-    alt: 'Indoor air conditioning unit installed in a commercial space',
-    caption: 'Four Fujitsu splits — commercial',
-  },
-  {
-    src: '/work/W5.jpg',
-    alt: 'Mitsubishi cascade air source heat pump system providing heating and hot water',
-    caption: 'Mitsubishi cascade ASHP — heating & hot water',
-  },
-  {
-    src: '/work/W6.jpg',
-    alt: 'Underfloor heating pipework installed alongside an air source heat pump system',
-    caption: 'Underfloor heating + ASHP with hot water',
-  },
-  {
-    src: '/work/W7.jpg',
-    alt: 'Large underfloor heating installation in progress',
-    caption: 'Large underfloor heating system',
-  },
-  {
-    src: '/work/W8.jpg',
-    alt: 'Air source heat pump installation with domestic hot water cylinder',
-    caption: 'ASHP with hot water cylinder',
-  },
-  {
-    src: '/work/W9.jpg',
-    alt: 'Air source heat pump installed in a compact indoor plant room',
-    caption: 'Compact indoor plant room install',
-  },
-  {
-    src: '/work/W10.jpg',
-    alt: 'Air source heat pump installed at a detached Lancashire property',
-    caption: 'Detached property ASHP install',
-  },
-  {
-    src: '/work/W11.jpg',
-    alt: 'Panasonic bi-bloc 12kW air source heat pump in a small indoor space',
-    caption: 'Panasonic bi-bloc 12kW',
-  },
-];
-
 export const faqs = [
   {
     question: 'Can I get a government grant?',
@@ -232,8 +179,8 @@ export const servicePages: ServicePage[] = [
     icon: 'heat-pump',
     title: 'Air Source Heat Pumps',
     intro: 'Reduce your carbon footprint and bring down your energy costs with an air source heat pump.',
-    heroImage: '/work/W1.jpg',
-    heroAlt: 'Mitsubishi Ecodan air source heat pump installed at a residential property',
+    heroImage: heroImages.ashp,
+    heroAlt: 'Outdoor air source heat pump unit installed by Ecoheat at a residential property',
     sections: [
       {
         title: 'Can I get a Government Grant?',
@@ -267,6 +214,7 @@ export const servicePages: ServicePage[] = [
     icon: 'solar',
     title: 'Solar Energy Technologies',
     intro: 'Generating solar power is one of the safest and best investments you can make.',
+    // TODO: replace with a polished EcoHeat solar install photo when available
     heroImage: '/images/solar-hero.jpg',
     heroAlt: 'Solar panels installed on a residential roof in the UK',
     sections: [
@@ -307,7 +255,7 @@ export const servicePages: ServicePage[] = [
     icon: 'underfloor',
     title: 'Underfloor Heating Solutions',
     intro: 'We carry out full design, installation and screed overlay.',
-    heroImage: '/work/W6.jpg',
+    heroImage: heroImages.underfloor,
     heroAlt: 'Underfloor heating pipework installed as part of a renewable heating project',
     sections: [
       {
@@ -352,8 +300,8 @@ export const servicePages: ServicePage[] = [
     icon: 'air-con',
     title: 'Air Conditioning and Ventilation Systems',
     intro: 'Cooling, heating and fresh, healthy air for your home or business.',
-    heroImage: '/work/W3.jpg',
-    heroAlt: 'Outdoor unit of a Fujitsu air conditioning split system',
+    heroImage: heroImages.ac,
+    heroAlt: 'Air source heat pump and air conditioning installation at a detached property',
     sections: [
       {
         title: "What's the difference?",
@@ -377,8 +325,8 @@ export const servicePages: ServicePage[] = [
     icon: 'servicing',
     title: 'Servicing and Maintenance',
     intro: 'We carry out a full maintenance service on all renewable technologies.',
-    heroImage: '/work/W4.jpg',
-    heroAlt: 'Indoor renewable heating equipment being serviced by Ecoheat',
+    heroImage: heroImages.servicing,
+    heroAlt: 'Indoor air source heat pump plant room installation with pipework',
     sections: [
       {
         title: 'ASHP servicing',

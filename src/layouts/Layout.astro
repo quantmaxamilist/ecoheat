@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { heroImages } from '../data/site';
 
 interface Props {
   title?: string;
@@ -10,7 +11,7 @@ interface Props {
 const {
   title = 'Eco Heat ASHP Ltd | Renewable Heating Specialists in Preston',
   description = 'MCS certified renewable heating specialists in Preston, Lancashire. Air source heat pumps, solar, underfloor heating, air conditioning and servicing across the North West.',
-  ogImage = '/work/W1.jpg',
+  ogImage = heroImages.home,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -23,7 +24,7 @@ const schemaLd = {
   url: 'https://ecoheatashp.co.uk',
   telephone: '+447949570392',
   email: 'andy@ecoheatashp.co.uk',
-  image: 'https://ecoheatashp.co.uk/logo.png',
+  image: 'https://ecoheatashp.co.uk/work/W167.jpg',
   logo: 'https://ecoheatashp.co.uk/logo.png',
   address: {
     '@type': 'PostalAddress',
