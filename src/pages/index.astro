@@ -14,13 +14,12 @@ import {
   reviews,
   galleryPreview,
   workPhotos,
-  heroImages,
   workPhotoCount,
   site,
 } from '../data/site';
 ---
 
-<Layout>
+<Layout ogImage="/hero.jpg">
   <Header />
   <main>
     <!-- Hero -->
@@ -57,8 +56,8 @@ import {
           </div>
           <div class="overflow-hidden rounded-3xl shadow-xl" data-reveal>
             <img
-              src={heroImages.home}
-              alt="Outdoor air source heat pump unit installed by Ecoheat at a residential property"
+              src="/hero.jpg"
+              alt="Modern air source heat pump outside a contemporary home"
               class="aspect-[4/3] w-full object-cover"
               loading="eager"
             />
