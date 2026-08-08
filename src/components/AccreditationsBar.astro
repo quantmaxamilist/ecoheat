@@ -1,0 +1,99 @@
+---
+import { accreditations } from '../data/accreditations';
+
+const marqueeItems = [...accreditations, ...accreditations];
+---
+
+<section class="accreditations-bar bg-forest py-10 md:py-12" aria-label="Accreditations and approvals">
+  <p
+    class="mb-8 text-center text-xs font-bold uppercase tracking-[0.24em] text-[#8FD8BF]"
+    data-reveal
+  >
+    Accredited &amp; Approved
+  </p>
+
+  <div class="accreditations-marquee relative overflow-hidden">
+    <div class="accreditations-track flex w-max items-center gap-4 md:gap-5">
+      {
+        marqueeItems.map((item, i) => (
+          <div class="accreditation-card shrink-0" aria-hidden={i >= accreditations.length ? 'true' : undefined}>
+            <img src={item.src} alt={i >= accreditations.length ? '' : item.alt} loading="lazy" decoding="async" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="accreditations-static mt-0 hidden flex-wrap items-center justify-center gap-4 px-5 md:gap-5">
+    {
+      accreditations.map((item) => (
+        <div class="accreditation-card shrink-0">
+          <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .accreditation-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 9.5rem;
+    height: 5.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.875rem;
+    border: 1px solid rgb(14 38 32 / 0.08);
+    background: #ffffff;
+    box-shadow:
+      0 1px 2px rgb(14 38 32 / 0.06),
+      0 8px 24px rgb(14 38 32 / 0.08);
+  }
+
+  .accreditation-card img {
+    max-height: 78px;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .accreditations-marquee {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .accreditations-track {
+    animation: accreditations-scroll 34s linear infinite;
+  }
+
+  .accreditations-marquee:hover .accreditations-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes accreditations-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .accreditations-marquee {
+      display: none;
+    }
+
+    .accreditations-static {
+      display: flex;
+    }
+  }
+</style>
