@@ -1,5 +1,6 @@
 ---
 import { navLinks, site } from '../data/site';
+import Logo from './Logo.astro';
 ---
 
 <header
@@ -7,20 +8,8 @@ import { navLinks, site } from '../data/site';
   class="fixed inset-x-0 top-0 z-50 border-b border-forest/5 bg-cream/95 backdrop-blur-md transition-shadow duration-300 [&.scrolled]:shadow-md"
 >
   <div class="container-narrow flex items-center justify-between gap-4 px-5 py-4 md:px-8 lg:px-12">
-    <a href="/" class="group flex items-center gap-2" aria-label="Eco Heat ASHP Ltd — Home">
-      <span
-        class="flex h-8 w-8 items-center justify-center rounded-full bg-green/10 text-green transition-colors group-hover:bg-green group-hover:text-white"
-        aria-hidden="true"
-      >
-        <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
-          <path
-            d="M12 2C8 8 4 10 4 14a8 8 0 0016 0c0-4-4-6-8-12zm0 16a4 4 0 01-4-4c0-2 2-4 4-6 2 2 4 4 4 6a4 4 0 01-4 4z"
-          ></path>
-        </svg>
-      </span>
-      <span class="font-heading text-xl font-bold tracking-tight text-ink">
-        eco<span class="text-green">heat</span>
-      </span>
+    <a href="/" class="group shrink-0 transition-opacity hover:opacity-90" aria-label="Eco Heat ASHP Ltd — Home">
+      <Logo variant="nav" />
     </a>
 
     <nav class="hidden items-center gap-6 lg:flex" aria-label="Main navigation">

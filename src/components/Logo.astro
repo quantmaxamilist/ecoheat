@@ -1,0 +1,25 @@
+---
+interface Props {
+  variant?: 'nav' | 'footer';
+  class?: string;
+}
+
+const { variant = 'nav', class: className = '' } = Astro.props;
+
+const isFooter = variant === 'footer';
+---
+
+<img
+  src="/logo.png"
+  alt="Eco Heat ASHP Ltd"
+  width={500}
+  height={203}
+  class:list={[
+    'w-auto object-contain',
+    isFooter ? 'h-10 brightness-0 invert' : 'h-11 md:h-12',
+    !isFooter && 'rounded-lg bg-white/90 px-2 py-1 shadow-sm ring-1 ring-forest/5',
+    className,
+  ]}
+  loading="eager"
+  decoding="async"
+/>
