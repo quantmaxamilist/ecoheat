@@ -76,12 +76,18 @@
 }
 
 [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+.js-ready [data-reveal]:not(.is-revealed) {
   opacity: 0;
   transform: translateY(24px);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
+  [data-reveal],
+  .js-ready [data-reveal]:not(.is-revealed) {
     opacity: 1;
     transform: none;
   }

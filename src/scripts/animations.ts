@@ -1,31 +1,68 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+const REVEAL_THRESHOLD = 0.85;
+
+function isInRevealZone(element: Element): boolean {
+  const rect = element.getBoundingClientRect();
+  return rect.top <= window.innerHeight * REVEAL_THRESHOLD;
+}
+
+function setRevealVisible(element: HTMLElement, animate = false): void {
+  element.classList.add('is-revealed');
+  if (animate && !prefersReducedMotion) {
+    element.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+  } else {
+    element.style.transition = '';
+  }
+  element.style.opacity = '1';
+  element.style.transform = 'translateY(0)';
+}
+
+function flushInViewReveals(elements: HTMLElement[]): void {
+  elements.forEach((element) => {
+    if (element.classList.contains('is-revealed')) return;
+    if (isInRevealZone(element)) {
+      setRevealVisible(element, false);
+    }
+  });
+}
+
 function initReveals(): void {
+  const elements = [...document.querySelectorAll<HTMLElement>('[data-reveal]')];
+  document.documentElement.classList.add('js-ready');
+
   if (prefersReducedMotion) {
-    document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
+    elements.forEach((element) => setRevealVisible(element, false));
     return;
   }
+
+  flushInViewReveals(elements);
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const el = entry.target as HTMLElement;
-        el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-        observer.unobserve(el);
+        setRevealVisible(entry.target as HTMLElement, true);
+        observer.unobserve(entry.target);
       });
     },
-    { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    { threshold: 0.01, rootMargin: '0px 0px -5% 0px' },
   );
 
-  document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
-    observer.observe(el);
+  elements.forEach((element) => {
+    if (!element.classList.contains('is-revealed')) {
+      observer.observe(element);
+    }
   });
+
+  const refreshReveals = (): void => {
+    flushInViewReveals(elements);
+  };
+
+  window.addEventListener('load', refreshReveals, { once: true });
+  window.addEventListener('resize', refreshReveals, { passive: true });
+  requestAnimationFrame(refreshReveals);
+  setTimeout(refreshReveals, 100);
 }
 
 function initMobileNav(): void {

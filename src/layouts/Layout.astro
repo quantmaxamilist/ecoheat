@@ -24,7 +24,7 @@ const schemaLd = {
   url: 'https://ecoheatashp.co.uk',
   telephone: '+447949570392',
   email: 'andy@ecoheatashp.co.uk',
-  image: 'https://ecoheatashp.co.uk/work/W167.jpg',
+  image: new URL(heroImages.home, Astro.site).href,
   logo: 'https://ecoheatashp.co.uk/logo.png',
   address: {
     '@type': 'PostalAddress',

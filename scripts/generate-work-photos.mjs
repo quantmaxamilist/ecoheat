@@ -1,19 +1,19 @@
 import fs from 'node:fs';
-import path from 'node:path';
 
-const html = fs.readFileSync(
-  new URL('../temp-our-work.html', import.meta.url),
-  'utf8',
-);
-
+const SOURCE_URL = 'https://ecoheatashp.co.uk/our-work/';
 const urlPattern =
   /https:\/\/ecoheatashp\.co\.uk\/wp-content\/uploads\/[^"'\s>]+\.jpg/gi;
 const exclude =
   /logo|mcs|napit|fgas|mitsubishi-ecodan|ipaf|pasma|refcom|panasonic|craftsman|certified|Logo-final/i;
 
-const urls = [...new Set(html.match(urlPattern) ?? [])]
-  .filter((url) => !exclude.test(url))
-  .sort();
+function dedupeUrls(urls) {
+  const bases = [
+    ...new Set(
+      urls.map((url) => url.replace(/-\d+x\d+(?=\.jpg$)/i, '')),
+    ),
+  ].sort();
+  return bases;
+}
 
 function captionFromUrl(url) {
   const file = url.split('/').pop()?.toLowerCase() ?? '';
@@ -65,7 +65,16 @@ function captionFromUrl(url) {
   };
 }
 
-const photos = urls.map((url, index) => {
+function findPhotoIndex(urls, pattern) {
+  const index = urls.findIndex((url) => pattern.test(url.split('/').pop() ?? ''));
+  return index >= 0 ? index + 1 : 1;
+}
+
+const html = await fetch(SOURCE_URL).then((response) => response.text());
+const allUrls = [...html.matchAll(urlPattern)].map((match) => match[0]);
+const bases = dedupeUrls(allUrls.filter((url) => !exclude.test(url)));
+
+const photos = bases.map((url, index) => {
   const { caption, alt } = captionFromUrl(url);
   return {
     src: `/work/W${index + 1}.jpg`,
@@ -75,18 +84,28 @@ const photos = urls.map((url, index) => {
 });
 
 const heroImages = {
-  home: '/work/W167.jpg', // outside.jpg — clean outdoor ASHP unit
-  ashp: '/work/W151.jpg', // ashp-system-outside.jpg
-  underfloor: '/work/W173.jpg', // underfloor-heating-1.jpg
-  ac: '/work/W161.jpg', // detached-house.jpg — property install
-  servicing: '/work/W149.jpg', // ashp-system-indoors.jpg — plant room
+  home: `/work/W${findPhotoIndex(bases, /outside\.jpg$/i)}.jpg`,
+  ashp: `/work/W${findPhotoIndex(bases, /ashp-system-outside\.jpg$/i)}.jpg`,
+  underfloor: `/work/W${findPhotoIndex(bases, /underfloor-heating-1\.jpg$/i)}.jpg`,
+  ac: `/work/W${findPhotoIndex(bases, /detached-house\.jpg$/i)}.jpg`,
+  servicing: `/work/W${findPhotoIndex(bases, /ashp-system-indoors\.jpg$/i)}.jpg`,
 };
 
-// Curated preview indices (skip resolution duplicates in the first pass)
-const galleryPreviewIndices = [0, 150, 142, 172, 160, 148];
-const galleryPreview = galleryPreviewIndices.map((i) => photos[i]);
+const previewPatterns = [
+  /nibeair|heat-pump-out/i,
+  /ashp-system-outside/i,
+  /water-cylinder/i,
+  /underfloor-heating-1/i,
+  /detached-house/i,
+  /ashp-system-indoors/i,
+];
 
-const output = `// Auto-generated from EcoHeat Our Work page scrape — ${photos.length} photos (W1–W${photos.length})
+const galleryPreview = previewPatterns.map((pattern, order) => {
+  const index = bases.findIndex((url) => pattern.test(url.split('/').pop() ?? ''));
+  return photos[index >= 0 ? index : order] ?? photos[0];
+});
+
+const output = `// Auto-generated from EcoHeat Our Work page scrape — ${photos.length} unique photos (W1–W${photos.length})
 // Regenerate: node scripts/generate-work-photos.mjs
 
 export interface WorkPhoto {
@@ -105,5 +124,5 @@ export const workPhotos: WorkPhoto[] = ${JSON.stringify(photos, null, 2)};
 `;
 
 fs.writeFileSync('src/data/work-photos.ts', output);
-console.log(`Generated ${photos.length} work photos -> src/data/work-photos.ts`);
+console.log(`Generated ${photos.length} unique work photos -> src/data/work-photos.ts`);
 console.log('Hero picks:', heroImages);
