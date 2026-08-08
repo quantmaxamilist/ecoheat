@@ -29,34 +29,90 @@ function initReveals(): void {
 }
 
 function initMobileNav(): void {
+  const header = document.getElementById('site-header');
   const toggle = document.getElementById('nav-toggle');
   const menu = document.getElementById('mobile-menu');
+  const panel = document.getElementById('mobile-menu-panel');
+  const backdrop = document.getElementById('mobile-menu-backdrop');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  const servicesAccordion = document.getElementById('mobile-services-accordion');
   const servicesToggle = document.getElementById('mobile-services-toggle');
   const servicesList = document.getElementById('mobile-services-list');
 
-  toggle?.addEventListener('click', () => {
-    const isOpen = menu?.classList.toggle('open');
-    toggle.classList.toggle('open', isOpen);
-    toggle.setAttribute('aria-expanded', String(isOpen));
-    document.body.classList.toggle('overflow-hidden', Boolean(isOpen));
+  if (!toggle || !menu || !panel || !backdrop || !closeBtn) return;
+
+  const syncHeaderOffset = (): void => {
+    const height = header?.offsetHeight ?? 76;
+    menu.style.setProperty('--mobile-header-offset', `${height}px`);
+  };
+
+  const closeServicesAccordion = (): void => {
+    servicesAccordion?.classList.remove('is-open');
+    servicesToggle?.setAttribute('aria-expanded', 'false');
+    servicesList?.setAttribute('hidden', '');
+  };
+
+  const openMenu = (): void => {
+    syncHeaderOffset();
+    menu.classList.add('is-open');
+    toggle.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    menu.setAttribute('aria-hidden', 'false');
+    menu.removeAttribute('inert');
+    document.body.classList.add('overflow-hidden');
+  };
+
+  const closeMenu = (): void => {
+    menu.classList.remove('is-open');
+    toggle.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    menu.setAttribute('aria-hidden', 'true');
+    menu.setAttribute('inert', '');
+    document.body.classList.remove('overflow-hidden');
+    closeServicesAccordion();
+  };
+
+  const isOpen = (): boolean => menu.classList.contains('is-open');
+
+  toggle.addEventListener('click', () => {
+    if (isOpen()) closeMenu();
+    else openMenu();
+  });
+
+  closeBtn.addEventListener('click', closeMenu);
+  backdrop.addEventListener('click', closeMenu);
+
+  panel.addEventListener('click', (event) => {
+    event.stopPropagation();
   });
 
   servicesToggle?.addEventListener('click', () => {
-    servicesList?.classList.toggle('open');
-    servicesToggle.setAttribute(
-      'aria-expanded',
-      String(servicesList?.classList.contains('open')),
-    );
+    const expanded = servicesAccordion?.classList.toggle('is-open');
+    const isExpanded = Boolean(expanded);
+    servicesToggle.setAttribute('aria-expanded', String(isExpanded));
+    if (isExpanded) {
+      servicesList?.removeAttribute('hidden');
+    } else {
+      servicesList?.setAttribute('hidden', '');
+    }
   });
 
-  menu?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      menu.classList.remove('open');
-      toggle?.classList.remove('open');
-      toggle?.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('overflow-hidden');
-    });
+  menu.querySelectorAll<HTMLAnchorElement>('[data-mobile-nav-link]').forEach((link) => {
+    link.addEventListener('click', closeMenu);
   });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && isOpen()) closeMenu();
+  });
+
+  window.addEventListener('resize', () => {
+    syncHeaderOffset();
+    if (window.innerWidth >= 1024 && isOpen()) closeMenu();
+  });
+
+  syncHeaderOffset();
 }
 
 function initServicesDropdown(): void {

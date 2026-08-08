@@ -1,6 +1,9 @@
 ---
 import { navLinks, site } from '../data/site';
 import Logo from './Logo.astro';
+
+const servicesLink = navLinks.find((link) => link.children);
+const topLevelLinks = navLinks.filter((link) => !link.children);
 ---
 
 <header
@@ -19,7 +22,7 @@ import Logo from './Logo.astro';
             <div class="relative">
               <button
                 id="services-dropdown-trigger"
-                class="flex items-center gap-1 text-sm font-semibold text-ink transition-colors hover:text-green"
+                class="flex min-h-11 items-center gap-1 text-sm font-semibold text-ink transition-colors hover:text-green"
                 aria-expanded="false"
                 aria-haspopup="true"
               >
@@ -50,7 +53,7 @@ import Logo from './Logo.astro';
           ) : (
             <a
               href={link.href}
-              class="text-sm font-semibold text-ink transition-colors hover:text-green"
+              class="flex min-h-11 items-center text-sm font-semibold text-ink transition-colors hover:text-green"
             >
               {link.label}
             </a>
@@ -62,76 +65,243 @@ import Logo from './Logo.astro';
     <div class="flex items-center gap-3">
       <a href="/contact" class="btn-primary hidden text-sm sm:inline-flex">Book a free survey</a>
       <button
+        type="button"
         id="nav-toggle"
-        class="relative z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-full border border-forest/10 lg:hidden"
-        aria-label="Toggle menu"
+        class="nav-toggle relative z-[70] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-forest/10 bg-cream lg:hidden"
+        aria-label="Open menu"
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
-        <span class="block h-0.5 w-5 bg-ink transition-all [.open>&]:translate-y-2 [.open>&]:rotate-45"
-        ></span>
-        <span class="block h-0.5 w-5 bg-ink transition-all [.open>&]:opacity-0"></span>
-        <span class="block h-0.5 w-5 bg-ink transition-all [.open>&]:-translate-y-2 [.open>&]:-rotate-45"
-        ></span>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
       </button>
     </div>
   </div>
-
-  <div
-    id="mobile-menu"
-    class="fixed inset-0 top-[73px] z-40 hidden bg-cream px-5 pb-8 pt-6 [.open&]:block lg:hidden"
-  >
-    <nav class="flex flex-col gap-1" aria-label="Mobile navigation">
-      {
-        navLinks.map((link) =>
-          link.children ? (
-            <div>
-              <button
-                id="mobile-services-toggle"
-                class="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-lg font-semibold text-ink"
-                aria-expanded="false"
-              >
-                {link.label}
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                    clip-rule="evenodd"></path>
-                </svg>
-              </button>
-              <div id="mobile-services-list" class="hidden pl-4 [.open&]:block">
-                {
-                  link.children.map((child) => (
-                    <a
-                      href={child.href}
-                      class="block rounded-xl px-4 py-2.5 text-base text-muted hover:text-green"
-                    >
-                      {child.label}
-                    </a>
-                  ))
-                }
-              </div>
-            </div>
-          ) : (
-            <a
-              href={link.href}
-              class="rounded-xl px-4 py-3 text-lg font-semibold text-ink hover:text-green"
-            >
-              {link.label}
-            </a>
-          ),
-        )
-      }
-      <a href="/contact" class="btn-primary mt-4 w-full text-center">Book a free survey</a>
-      <a href={site.phoneHref} class="mt-3 text-center text-sm font-semibold text-green">
-        {site.phone}
-      </a>
-    </nav>
-  </div>
 </header>
 
+<div
+  id="mobile-menu"
+  class="mobile-menu fixed inset-0 z-[100] lg:hidden"
+  aria-hidden="true"
+  inert
+>
+    <button
+      type="button"
+      id="mobile-menu-backdrop"
+      class="mobile-menu__backdrop absolute inset-0 bg-forest/40"
+      aria-label="Close menu"
+      tabindex="-1"
+    ></button>
+
+    <div
+      id="mobile-menu-panel"
+      class="mobile-menu__panel absolute inset-x-0 top-0 flex max-h-full flex-col bg-cream shadow-2xl"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation"
+    >
+      <div class="flex items-center justify-between border-b border-forest/10 px-5 py-4">
+        <span class="font-heading text-sm font-bold uppercase tracking-[0.18em] text-green">Menu</span>
+        <button
+          type="button"
+          id="mobile-menu-close"
+          class="flex h-11 w-11 items-center justify-center rounded-full border border-forest/10 text-ink transition-colors hover:bg-forest/5"
+          aria-label="Close menu"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"></path>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto px-5 py-4" aria-label="Mobile navigation">
+        <ul class="flex flex-col gap-1">
+          {
+            topLevelLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="mobile-nav-link flex min-h-11 items-center rounded-xl px-4 text-lg font-semibold text-ink transition-colors hover:bg-forest/5 hover:text-green"
+                  data-mobile-nav-link
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+
+          {
+            servicesLink?.children && (
+              <li class="mobile-accordion" id="mobile-services-accordion">
+                <button
+                  type="button"
+                  id="mobile-services-toggle"
+                  class="mobile-accordion__trigger flex min-h-11 w-full items-center justify-between rounded-xl px-4 text-left text-lg font-semibold text-ink transition-colors hover:bg-forest/5"
+                  aria-expanded="false"
+                  aria-controls="mobile-services-list"
+                >
+                  {servicesLink.label}
+                  <svg
+                    class="mobile-accordion__chevron h-5 w-5 shrink-0 text-green transition-transform duration-300"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                </button>
+                <div id="mobile-services-list" class="mobile-accordion__panel" hidden>
+                  <ul class="overflow-hidden pb-2 pl-2 pt-1">
+                    {
+                      servicesLink.children.map((child) => (
+                        <li>
+                          <a
+                            href={child.href}
+                            class="mobile-nav-link flex min-h-11 items-center rounded-xl px-4 text-base text-muted transition-colors hover:bg-forest/5 hover:text-green"
+                            data-mobile-nav-link
+                          >
+                            {child.label}
+                          </a>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              </li>
+            )
+          }
+        </ul>
+
+        <div class="mt-6 space-y-3 border-t border-forest/10 pt-6">
+          <a href="/contact" class="btn-primary flex min-h-11 w-full items-center justify-center" data-mobile-nav-link>
+            Book a free survey
+          </a>
+          <a
+            href={site.phoneHref}
+            class="flex min-h-11 items-center justify-center text-sm font-semibold text-green"
+            data-mobile-nav-link
+          >
+            {site.phone}
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
 <style>
-  #mobile-menu.open {
+  .nav-toggle__bar {
+    position: absolute;
+    left: 50%;
+    width: 1.25rem;
+    height: 2px;
+    border-radius: 9999px;
+    background: #0e2620;
+    transform: translateX(-50%);
+    transition: transform 0.3s ease, opacity 0.3s ease, top 0.3s ease;
+  }
+
+  .nav-toggle__bar:nth-child(1) {
+    top: calc(50% - 6px);
+  }
+
+  .nav-toggle__bar:nth-child(2) {
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .nav-toggle__bar:nth-child(3) {
+    top: calc(50% + 6px);
+  }
+
+  .nav-toggle.is-open .nav-toggle__bar:nth-child(1) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .nav-toggle.is-open .nav-toggle__bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle.is-open .nav-toggle__bar:nth-child(3) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .mobile-menu__backdrop {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-menu__panel {
+    opacity: 0;
+    transform: translateY(-12px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    padding-top: var(--mobile-header-offset, 4.75rem);
+    max-height: 100dvh;
+  }
+
+  .mobile-menu.is-open {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mobile-menu.is-open .mobile-menu__backdrop {
+    opacity: 1;
+  }
+
+  .mobile-menu.is-open .mobile-menu__panel {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mobile-accordion.is-open .mobile-accordion__chevron {
+    transform: rotate(180deg);
+  }
+
+  .mobile-accordion__panel[hidden] {
+    display: none;
+  }
+
+  .mobile-accordion.is-open .mobile-accordion__panel {
     display: block;
+    animation: accordion-in 0.25s ease;
+  }
+
+  @keyframes accordion-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-toggle__bar,
+    .mobile-menu__backdrop,
+    .mobile-menu__panel {
+      transition: none;
+    }
+
+    .mobile-menu__panel {
+      transform: none;
+    }
+
+    .mobile-accordion.is-open .mobile-accordion__panel {
+      animation: none;
+    }
   }
 </style>
