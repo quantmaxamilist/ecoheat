@@ -17,6 +17,7 @@ export const accreditations: Accreditation[] = [
   { src: '/accreditations/panasonic-logo.jpg', alt: 'Panasonic' },
   {
     src: '/accreditations/approvedcraftsman.jpg',
-    alt: 'Approved Craftsman — Consumer Protection Association',
+    alt: 'Approved Craftsman',
   },
+  { src: '/accreditations/iwa.jpg', alt: 'IWA Insurance-Backed Guarantee' },
 ];
