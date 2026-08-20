@@ -14,6 +14,8 @@ export const accreditations: Accreditation[] = [
   { src: '/accreditations/IPAF.jpg', alt: 'IPAF' },
   { src: '/accreditations/PASMA.jpg', alt: 'PASMA' },
   { src: '/accreditations/REFCOM-logo.jpg', alt: 'REFCOM' },
+  { src: '/accreditations/recc.jpg', alt: 'RECC — Renewable Energy Consumer Code' },
+  { src: '/accreditations/tsi-approved-code.jpg', alt: 'TSI Approved Code — Trading Standards' },
   { src: '/accreditations/panasonic-logo.jpg', alt: 'Panasonic' },
   {
     src: '/accreditations/approvedcraftsman.jpg',

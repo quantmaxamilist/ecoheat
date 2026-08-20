@@ -358,7 +358,7 @@ export const servicePages: ServicePage[] = [
       {
         title: 'Cost',
         content:
-          '£180 + VAT for systems up to 22kW. Anti-freeze is quoted separately; parts outside warranty are not included. We provide a 2-year workmanship warranty. Extra mileage is quoted at enquiry.',
+          '£180 + VAT for systems up to 22kW. Anti-freeze is quoted separately. We provide a 1-year warranty on all parts supplied. Extra mileage is quoted at enquiry.',
       },
       {
         title: 'Recent example',
